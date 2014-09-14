@@ -1,5 +1,6 @@
 #H
-*** H: HIV Reference Alignment Viewer ***
+H: HIV Reference Alignment Viewer
+--------------------------------- 
 
 A simple viewer for alignments of sequences in respect of a reference.
 
