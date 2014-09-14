@@ -2,9 +2,9 @@
 <html>
 <head>
 	<meta charset="UTF-8"> 
-	<script src="../biojs-vis-H.min.js"></script>
+	<script src="biojs-vis-H.min.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-	<link type="text/css" rel="stylesheet" href="../css/H.css" />
+	<link type="text/css" rel="stylesheet" href="H.css" />
 	
 	
 	<script>
@@ -16,39 +16,20 @@
 				id: "alignment",
 				target:"#holder"
 			};
+		function getParameterByName(name) {
+		    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		        results = regex.exec(location.search);
+		    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+		var url ="http://localhost/~4ndr01d3/snippets/";
+		var job_id=getParameterByName("job_id");
 
-		var aln = {
-			    "header": {
-			        "names": ["ref","query"],
-			        "starts": ["1","1"],
-			        "alignment_start": 20
-			    },
-			    "alignment": [
-			        ["P", "P"],
-			        ["F", "F"],
-			        ["C", "-"],
-			        ["M", "M"],
-			        ["F", "P"],
-			        ["P", "P"],
-			        ["P", "P"],
-			        ["F", "F"],
-			        ["C", "-"],
-			        ["M", "M"],
-			        ["C", "-"],
-			        ["M", "M"],
-			        ["F", "P"],
-			        ["P", "P"],
-			        ["P", "P"],
-			        ["F", "F"],
-			        ["C", "-"],
-			        ["F", "P"],
-			        ["P", "P"],
-			        ["-", "C"]
-			    ]
-			};
-		var component = biojs.vis.H.init(settings);
-		component.load(aln);
-		component.draw();
+		$.getJSON( url+job_id , function( data ) {
+			var component = biojs.vis.H.init(settings);
+			component.load(data);
+			component.draw();
+		});
 
 	});
 		
