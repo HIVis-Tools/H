@@ -1,0 +1,42 @@
+{
+  "name": "biojs.vis.H",
+  "description": "HIV Reference Alignment Viewer",
+  "version": "0.0.1",
+  "homepage": "https://github.com/HIVis-Tools/H",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HIVis-Tools/H"
+  },
+  "author": "Gustavo A. Salazar <gustavoadolfo.salazar@gmail.com>",
+  "dependencies": {
+    "d3": "^3.4.11",
+    "jquery": "^2.1.1"
+  },
+  "devDependencies": {
+    "browserify": "~4.2.0",
+    "chai": "^1.9.1",
+    "karma": "^0.12.21",
+    "karma-browserify": "^0.2.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-firefox-launcher": "^0.1.3",
+    "karma-mocha": "^0.1.6",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "mocha": "^1.21.4"
+  },
+  "keywords": [
+    "HIV, alignment, viewer"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma start karma.conf.js",
+    "build-browser": "browserify browser.js  > biojs-vis-H.min.js"
+  },
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/HIVis-Tools/H/issues"
+  },
+  "directories": {
+    "test": "test"
+  }
+}

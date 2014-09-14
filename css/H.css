@@ -1,0 +1,37 @@
+rect.background {
+	fill:white;
+}
+
+.track rect {
+	fill:#ddd;
+}
+
+.sequence_name {
+	font-family: monospace;
+	font-size: 20px;
+	fill: rgb(50,50,50);
+	
+}
+.coordinate {
+	font-family: monospace;
+	font-size: 10px;
+	fill: rgb(150,150,150);
+}
+
+.pairbase {
+	font-family: monospace;
+	fill: rgb(50,50,50);
+}
+.position_label {
+	fill: rgb(100,100,100);
+}
+.gap rect{
+	fill:white;
+}
+
+.match rect{
+	fill:rgb(100,200,100);
+}
+.mismatch rect{
+	fill:rgb(200,100,100);
+}

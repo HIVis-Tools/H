@@ -1,0 +1,61 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="UTF-8"> 
+	<script src="../biojs-vis-H.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="../css/H.css" />
+	
+	
+	<script>
+
+	jQuery( document ).ready(function( $ ) {
+		var settings = {
+				width: 1400,
+				height: 400,
+				id: "alignment",
+				target:"#holder"
+			};
+
+		var aln = {
+			    "header": {
+			        "names": ["ref","query"],
+			        "starts": ["1","1"],
+			        "alignment_start": 20
+			    },
+			    "alignment": [
+			        ["P", "P"],
+			        ["F", "F"],
+			        ["C", "-"],
+			        ["M", "M"],
+			        ["F", "P"],
+			        ["P", "P"],
+			        ["P", "P"],
+			        ["F", "F"],
+			        ["C", "-"],
+			        ["M", "M"],
+			        ["C", "-"],
+			        ["M", "M"],
+			        ["F", "P"],
+			        ["P", "P"],
+			        ["P", "P"],
+			        ["F", "F"],
+			        ["C", "-"],
+			        ["F", "P"],
+			        ["P", "P"],
+			        ["-", "C"]
+			    ]
+			};
+		var component = biojs.vis.H.init(settings);
+		component.load(aln);
+		component.draw();
+
+	});
+		
+	</script>
+</head>
+<body>
+
+<div id='holder'></div>
+</body>
+</html>
