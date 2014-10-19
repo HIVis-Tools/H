@@ -11,7 +11,7 @@
 
 	jQuery( document ).ready(function( $ ) {
 		var settings = {
-				width: 1400,
+				width: 1200,
 				height: 400,
 				id: "alignment",
 				target:"#holder"
@@ -24,11 +24,14 @@
 		}
 		var url ="http://localhost/~4ndr01d3/snippets/";
 		var job_id=getParameterByName("job_id");
-
+		var component=null;
 		$.getJSON( url+job_id , function( data ) {
-			var component = biojs.vis.H.init(settings);
+			component = biojs.vis.H.init(settings);
 			component.load(data);
 			component.draw();
+		});
+		$("#toggler").click(function(){
+			component.toggleView();
 		});
 
 	});
@@ -38,5 +41,6 @@
 <body>
 
 <div id='holder'></div>
+<button id="toggler">Toggle view</button>
 </body>
 </html>
