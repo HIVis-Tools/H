@@ -10,13 +10,13 @@
   "author": "Gustavo A. Salazar <gustavoadolfo.salazar@gmail.com>",
   "dependencies": {
     "d3": "^3.4.11",
-    "jquery": "^2.1.1",
-    "lodash": "^3.10.0",
-    "optimist": "^0.6.1"
+    "jquery": "^2.1.1"
   },
   "devDependencies": {
     "browserify": "~4.2.0",
     "chai": "^1.9.1",
+    "lodash": "^3.10.0",
+    "optimist": "^0.6.1"
     "karma": "^0.12.21",
     "karma-browserify": "^0.2.1",
     "karma-chai": "^0.1.0",
