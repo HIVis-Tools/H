@@ -22,7 +22,7 @@
 		        results = regex.exec(location.search);
 		    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 		}
-		var url ="http://localhost/~4ndr01d3/snippets/";
+		var url ="./";
 		var job_id=getParameterByName("job_id");
 		var component=null;
 		$.getJSON( url+job_id , function( data ) {
