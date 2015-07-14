@@ -10,7 +10,9 @@
   "author": "Gustavo A. Salazar <gustavoadolfo.salazar@gmail.com>",
   "dependencies": {
     "d3": "^3.4.11",
-    "jquery": "^2.1.1"
+    "jquery": "^2.1.1",
+    "lodash": "^3.10.0",
+    "optimist": "^0.6.1"
   },
   "devDependencies": {
     "browserify": "~4.2.0",
