@@ -18,7 +18,8 @@ var H =  {
 		    .attr("id", settings.id)
 		    .attr("width", "100%")
 		    .attr("height", settings.height).append("g");
-        return self;
+		d3.select(window).on('resize', self.redraw(self));
+		return self;
 	},
 	load: function(alignment){
 		var self = this;
@@ -205,11 +206,11 @@ var H =  {
 	currentView:"web",
 	toPrintView: function(){
 		var self = this;
-		var ch_per_line= $(self.settings.target).width()/(self.base_side/6);
+		self.base_side = 60;
+		var ch_per_line= $(self.settings.target).width()/(self.base_side/2.7);
 		ch_per_line = ch_per_line - ch_per_line%10;
-		if (self.currentView!="print"){
+//		if (self.currentView!="print"){
 			//Moving the whole pairbase
-			self.base_side = 60;
 			d3.selectAll(".pairbase")
 				.transition()
 					.attr("transform", function (d,i){
@@ -267,12 +268,12 @@ var H =  {
 
 
 			self.currentView = "print";
-		}
+//		}
 	},
 	toWebView: function(){
 		var self = this;
 		self.base_side =self.settings.height/2.2;
-		if (self.currentView!="web"){
+//		if (self.currentView!="web"){
 			//Moving the whole pairbase
 			d3.selectAll(".pairbase")
 				.transition()
@@ -323,7 +324,7 @@ var H =  {
 				.transition()
 					.style("opacity","1");
 			self.currentView = "web";
-		}
+//		}
 	},
 	toggleView: function(){
 		var self = this;
@@ -333,6 +334,15 @@ var H =  {
 			self.toPrintView();
 		}else if (self.currentView == "print")
 			self.toWebView();
+	},
+	redraw: function(self){
+		return function(){
+			console.log("resizing!!!");
+			if (self.currentView == "web"){
+				self.toWebView();
+			}else if (self.currentView == "print")
+				self.toPrintView();
+		};
 	}
 };
 
