@@ -31,8 +31,7 @@ var aln = {
 describe('H', function () {
 	it('should create a SVG element', function () {
 		var component = H.init(settings);
-		assert.equal($("#"+settings.id).attr("width"), settings.width);
-		$("#"+settings.id).remove();
+		assert.equal($("#"+settings.id).get(0).tagName, "svg");
 	});
 	
 //	it('should load a sample alignment', function () {
