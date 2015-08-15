@@ -10,12 +10,6 @@
 	<script>
 
 	jQuery( document ).ready(function( $ ) {
-		var settings = {
-				width: 1200,
-				height: 400,
-				id: "alignment",
-				target:"#holder"
-			};
 		function getParameterByName(name) {
 		    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 		    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -26,7 +20,7 @@
 		var job_id=getParameterByName("job_id");
 		var component=null;
 		$.getJSON( url+job_id , function( data ) {
-			component = biojs.vis.H.init(settings);
+			component = biojs.vis.H.init({});
 			component.load(data);
 			component.draw();
 		});
@@ -38,9 +32,9 @@
 		
 	</script>
 </head>
-<body>
+<body bgcolor="#f0ffff">
 
-<div id='holder'></div>
+<div id='holder' style='width: 80%; margin-left: 10%;'></div>
 <button id="toggler">Toggle view</button>
 </body>
 </html>

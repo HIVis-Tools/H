@@ -13,18 +13,18 @@
     "jquery": "^2.1.1"
   },
   "devDependencies": {
-    "browserify": "~4.2.0",
-    "chai": "^1.9.1",
-    "lodash": "^3.10.0",
-    "optimist": "^0.6.1",
-    "karma": "^0.12.21",
-    "karma-browserify": "^0.2.1",
+    "browserify": "^11.0.1",
+    "chai": "^3.2.0",
+    "karma": "^0.13.9",
+    "karma-browserify": "^4.3.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.1.4",
     "karma-firefox-launcher": "^0.1.3",
     "karma-mocha": "^0.1.6",
     "karma-phantomjs-launcher": "^0.1.4",
-    "mocha": "^1.21.4"
+    "lodash": "^3.10.0",
+    "mocha": "^1.21.4",
+    "optimist": "^0.6.1"
   },
   "keywords": [
     "HIV, alignment, viewer"

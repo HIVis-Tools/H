@@ -11,9 +11,12 @@ var H =  {
 	init: function(settings){
 		var self = this;
 		self.settings = settings;
+		if (typeof settings.height ==  "undefined") self.settings.height =300;
+		if (typeof settings.id ==  "undefined") 	self.settings.id ="alignment";
+		if (typeof settings.target ==  "undefined") self.settings.target ="#holder";
 		self.svg = d3.select(settings.target).append("svg")
 		    .attr("id", settings.id)
-		    .attr("width", settings.width)
+		    .attr("width", "100%")
 		    .attr("height", settings.height).append("g");
         return self;
 	},
@@ -50,14 +53,16 @@ var H =  {
 			previous=current;
 		}
 	},
+	base_side:0,
 	draw: function(){
 		var self = this;
-		var base_side =self.settings.height/4;
+		self.base_side =self.settings.height/2.2;
 		var first=self.alignment.header.alignment_start;
+		var current_w= $(self.settings.target).width();
 
 		//background
 		self.svg.append("rect")
-			.attr("width",self.settings.width)
+			.attr("width","100%")
 			.attr("height",self.settings.height)
 			.attr("class","background");
 		
@@ -67,21 +72,14 @@ var H =  {
 		self.pairbases= pairbases;
 		pairbases.pos=0;
 		
-//		self.svg.append("clipPath")
-//			.attr("id","clip_path").append("rect")
-//			.attr("x", base_side*1.5)
-//			.attr("y", base_side)
-//			.attr("width",self.settings.width-(base_side*1.5))
-//			.attr("height",base_side*3);
-//
-//		pairbases.attr("clip-path","url(#clip_path)");
-
 		var pairbase = pairbases.selectAll(".pairbase")
 			.data(self.alignment.alignment)
 			.enter().insert("g")
 				.attr("id", function (d,i){ return "pairbase_"+i;})
 				.attr("class", "pairbase")
-				.attr("transform", function (d,i){ return "translate("+((i+2) * base_side)+","+( 2 * base_side)+")" ; });
+				.attr("transform", function (d,i){
+					return "translate("+((i+2) * self.base_side)+","+( 0.7*self.base_side)+")" ;
+				});
 
 		
 		
@@ -91,24 +89,24 @@ var H =  {
 					.attr("id", function (d,i){ 
 						return "track_"+i;})
 					.attr("class", "track")
-					.attr("transform", function (d,i){ return "translate(0,"+((i+2) * base_side)+")" ; });
+					.attr("transform", function (d,i){ return "translate(0,"+((i+0.4) * self.base_side)+")" ; });
 	
 		tracks.append("rect")
 			.attr("x", 0)
-			.attr("y", -0.7*base_side )
-			.attr("width",base_side*1.5)
-			.attr("height",base_side*1.2)
+			.attr("y", -0.4*self.base_side )
+			.attr("width",self.base_side*1.5)
+			.attr("height",self.base_side*1.2)
 			.style("fill","white");
 		tracks.append("rect")
-			.attr("x", base_side*1.5)
-			.attr("y", -0.5*base_side)
-			.attr("width",self.settings.width-3)
-			.attr("height",base_side)
+			.attr("x", self.base_side*1.5)
+			.attr("y", -0.2*self.base_side)
+			.attr("width","100%")
+			.attr("height",self.base_side)
 			.style("opacity",0);
 		
 		var seq_names = tracks.append("text")
-		.text(function (d,i){ return d;})
-		.attr("class", "sequence_name");
+			.text(function (d,i){ return d;})
+			.attr("class", "sequence_name");
 
 		
 		var aln_coordinates = pairbases.append("g")
@@ -117,34 +115,19 @@ var H =  {
 			.data(d3.range(first,first+self.alignment.alignment.length))
 			.enter().append("text")
 				.text(function (d,i){ return "-"+d+"-";})
-				.attr("x", function (d,i){ return (i+2) * base_side;})
-				.attr("y", function (d,i){ return base_side*1.5 -5;})
+				.attr("x", function (d,i){ return (i+2) * self.base_side;})
+				.attr("y", function (d,i){ return self.base_side*0.2 -5;})
 				.attr("text-anchor","middle")
 				.attr("class", "coordinate");
 		
 		
 		pairbase.each(function(d,i){
-			self.drawBases(d,i,self);
+			self.drawBases(d,i,self.base_side,self);
 		});
 
-//		var zoom = d3.behavior.zoom().
-//			scaleExtent([1,1]).
-//			on("zoom", function() {
-//				//console.log( d3.event.translate);
-//				if (d3.event.translate[0]>0){
-//					zoom.translate([0, d3.event.translate[1]]);
-//					return;
-//				}else if (d3.event.translate[0]<2.5*base_side-self.settings.width) {
-//					zoom.translate([2.5*base_side-self.settings.width, d3.event.translate[1]]);
-//					return;
-//				}
-//				pairbases.attr("transform", "translate(" + d3.event.translate[0] + ",0)scale(1)");
-//				self.svg.selectAll("#clip_path").attr("transform", "translate(" + -d3.event.translate[0] + ",0)scale(1)");
-//			});
-		
 		var drag = d3.behavior.drag().
 			on("drag", function() {
-				var limit =self.settings.width-(self.alignment.alignment.length+2.5)*base_side;
+				var limit =current_w-(self.alignment.alignment.length+2.5)*self.base_side;
 				if (d3.event!=null)
 					pairbases.pos += d3.event.dx;
 				if (pairbases.pos>0) pairbases.pos=0;
@@ -155,17 +138,16 @@ var H =  {
 		self.drag=drag;
 		self.svg.append("rect")
 			.attr("class", "toucharea")
-			.attr("width",self.settings.width)
-			.attr("height",2* base_side)
-			.attr("x", 1.5*base_side)
-			.attr("y", 1.5*base_side)
+			.attr("width",current_w)
+			.attr("height",2* self.base_side)
+			.attr("x", 1.5*self.base_side)
+			.attr("y", 0.5*self.base_side)
 			.call(drag)
 			.style("opacity",0);
 
 
 	},
-	drawBases: function(d,i,self){
-		var base_side =self.settings.height/4;
+	drawBases: function(d,i,base_side,self){
 		var original_pos=[];
 		self.settings.alignment_start;
 		for (var j=0;j<d.length;j++){
@@ -223,56 +205,59 @@ var H =  {
 	currentView:"web",
 	toPrintView: function(){
 		var self = this;
-		var base_side =self.settings.height/4;
+		var ch_per_line= $(self.settings.target).width()/(self.base_side/6);
+		ch_per_line = ch_per_line - ch_per_line%10;
 		if (self.currentView!="print"){
 			//Moving the whole pairbase
+			self.base_side = 60;
 			d3.selectAll(".pairbase")
 				.transition()
 					.attr("transform", function (d,i){
-						return "translate("+(2*base_side +(i%30)*base_side/3)+","+( 2 * base_side*(Math.floor(i/30)*0.7+1))+")" ;  
+						return "translate("+(self.base_side/2 +(i%ch_per_line)*self.base_side/3)+","+
+												( 2 * self.base_side*Math.floor(i/ch_per_line)*0.7+self.base_side/2)+")" ;
 					});
 
 			d3.selectAll("g.track").style("visibility","hidden");
 			//Move the base
 			d3.selectAll(".bases_labels")
 				.transition()
-					.attr("transform", "translate("+(-0.3*base_side)+","+(-0.3*base_side)+")")
-					.style("font-size", (base_side/3))
+					.attr("transform", "translate("+(-0.3*self.base_side)+","+(-0.3*self.base_side)+")")
+					.style("font-size", (self.base_side/3))
 					.attr("x",function(d,i){
-						var index =Math.floor(i/2)%30;
-						return (0.4*Math.floor(index/10)-0.125)*base_side;
+						var index =Math.floor(i/2)%ch_per_line;
+						return (0.4*Math.floor(index/10)-0.125)*self.base_side;
 					})
 					.attr("y",function(d,i){
 						var j = +d3.select(this).attr("line_number");
-						return (j+0.125)*base_side -base_side*j/2;
+						return (j+0.125)*self.base_side - self.base_side*j/2;
 					});
-			
+
 			//move the top coordinate
 			d3.selectAll(".label_tl")
 				.transition()
-					.attr("transform", "translate(0,"+(-0.1*base_side)+")")
-					.style("font-size", (base_side/8))
+					.attr("transform", "translate(0,"+(-0.1*self.base_side)+")")
+					.style("font-size", (self.base_side/8))
 					.attr("x",function(d,i){
-						var index =Math.floor(i/2)%30;
-						return (0.4*Math.floor(index/10)-0.4)*base_side;
+						var index =Math.floor(i/2)%ch_per_line;
+						return (0.4*Math.floor(index/10)-0.4)*self.base_side;
 					})
 					.attr("y",function(d,i){
 						var j = +d3.select(this).attr("line_number");
-						return (j-0.3)*base_side -base_side*j/2;
+						return (j-0.3)*self.base_side -self.base_side*j/2;
 					});
 			
 			//move the bottom coordinate
 			d3.selectAll(".label_br")
 				.transition()
-					.attr("transform", "translate("+(-0.6*base_side)+","+(-0.45*base_side)+")")
-					.style("font-size", (base_side/8))
+					.attr("transform", "translate("+(-0.6*self.base_side)+","+(-0.45*self.base_side)+")")
+					.style("font-size", (self.base_side/8))
 					.attr("x",function(d,i){
-						var index =Math.floor(i/2)%30;
-						return (0.4*Math.floor(index/10)+0.2)*base_side;
+						var index =Math.floor(i/2)%ch_per_line;
+						return (0.4*Math.floor(index/10)+0.2)*self.base_side;
 					})
 					.attr("y",function(d,i){
 						var j = +d3.select(this).attr("line_number");
-						return (j+0.4)*base_side -base_side*j/2;
+						return (j+0.4)*self.base_side -self.base_side*j/2;
 					});
 			
 			//resize the background
@@ -286,37 +271,38 @@ var H =  {
 	},
 	toWebView: function(){
 		var self = this;
-		var base_side =self.settings.height/4;
+		self.base_side =self.settings.height/2.2;
 		if (self.currentView!="web"){
 			//Moving the whole pairbase
 			d3.selectAll(".pairbase")
 				.transition()
-					.attr("transform", function (d,i){ return "translate("+((i+2) * base_side)+","+( 2 * base_side)+")" ; });
-
+					.attr("transform", function (d,i){
+						return "translate("+((i+2) * self.base_side)+","+( 0.7*self.base_side)+")" ;
+					});
 			d3.selectAll("g.track").style("visibility",null);
 			d3.selectAll(".bases_labels")
 				.transition()
 					.attr("transform", "translate(0,0)")
-					.style("font-size", (base_side/2))
+					.style("font-size", (self.base_side/2))
 					.attr("x",function(d,i){
-						return (-0.125)*base_side;
+						return (-0.125)*self.base_side;
 					})
 					.attr("y",function(d,i){
 						var j = +d3.select(this).attr("line_number");
-						return (j+0.125)*base_side;
+						return (j+0.125)*self.base_side;
 					});
 			
 			//move the top coordinate
 			d3.selectAll(".label_tl")
 			.transition()
 				.attr("transform", "translate(0,0)")
-				.style("font-size", (base_side/7))
+				.style("font-size", (self.base_side/7))
 				.attr("x",function(d,i){
-					return (-0.4)*base_side;
+					return (-0.4)*self.base_side;
 				})
 				.attr("y",function(d,i){
 					var j = +d3.select(this).attr("line_number");
-					return (j-0.3)*base_side;
+					return (j-0.3)*self.base_side;
 				});
 
 
@@ -324,13 +310,13 @@ var H =  {
 			d3.selectAll(".label_br")
 				.transition()
 					.attr("transform", "translate(0,0)")
-					.style("font-size", (base_side/7))
+					.style("font-size", (self.base_side/7))
 					.attr("x",function(d,i){
-						return (0.2)*base_side;
+						return (0.2)*self.base_side;
 					})
 					.attr("y",function(d,i){
 						var j = +d3.select(this).attr("line_number");
-						return (j+0.4)*base_side;
+						return (j+0.4)*self.base_side;
 					});
 
 			d3.selectAll(".bases_bg")
