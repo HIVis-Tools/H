@@ -216,66 +216,67 @@ var H =  {
 		self.base_side = 60;
 		var ch_per_line= $(self.settings.target).width()/(self.base_side/2.7);
 		ch_per_line = ch_per_line - ch_per_line%10;
-//		if (self.currentView!="print"){
-			//Moving the whole pairbase
-			d3.selectAll(".pairbase")
-				.transition()
-					.attr("transform", function (d,i){
-						return "translate("+(self.base_side/2 +(i%ch_per_line)*self.base_side/3)+","+
-												( 2 * self.base_side*Math.floor(i/ch_per_line)*0.7+self.base_side/2)+")" ;
-					});
+		if (self.currentView!="print"){
+			self.move(0);
+		}
+		//Moving the whole pairbase
+		d3.selectAll(".pairbase")
+			.transition()
+				.attr("transform", function (d,i){
+					return "translate("+(self.base_side/2 +(i%ch_per_line)*self.base_side/3)+","+
+											( 2 * self.base_side*Math.floor(i/ch_per_line)*0.7+self.base_side/2)+")" ;
+				});
 
-			d3.selectAll("g.track").style("visibility","hidden");
-			//Move the base
-			d3.selectAll(".bases_labels")
-				.transition()
-					.attr("transform", "translate("+(-0.3*self.base_side)+","+(-0.3*self.base_side)+")")
-					.style("font-size", (self.base_side/3))
-					.attr("x",function(d,i){
-						var index =Math.floor(i/2)%ch_per_line;
-						return (0.4*Math.floor(index/10)-0.125)*self.base_side;
-					})
-					.attr("y",function(d,i){
-						var j = +d3.select(this).attr("line_number");
-						return (j+0.125)*self.base_side - self.base_side*j/2;
-					});
+		d3.selectAll("g.track").style("visibility","hidden");
+		//Move the base
+		d3.selectAll(".bases_labels")
+			.transition()
+				.attr("transform", "translate("+(-0.3*self.base_side)+","+(-0.3*self.base_side)+")")
+				.style("font-size", (self.base_side/3))
+				.attr("x",function(d,i){
+					var index =Math.floor(i/2)%ch_per_line;
+					return (0.4*Math.floor(index/10)-0.125)*self.base_side;
+				})
+				.attr("y",function(d,i){
+					var j = +d3.select(this).attr("line_number");
+					return (j+0.125)*self.base_side - self.base_side*j/2;
+				});
 
-			//move the top coordinate
-			d3.selectAll(".label_tl")
-				.transition()
-					.attr("transform", "translate(0,"+(-0.1*self.base_side)+")")
-					.style("font-size", (self.base_side/8))
-					.attr("x",function(d,i){
-						var index =Math.floor(i/2)%ch_per_line;
-						return (0.4*Math.floor(index/10)-0.4)*self.base_side;
-					})
-					.attr("y",function(d,i){
-						var j = +d3.select(this).attr("line_number");
-						return (j-0.3)*self.base_side -self.base_side*j/2;
-					});
-			
-			//move the bottom coordinate
-			d3.selectAll(".label_br")
-				.transition()
-					.attr("transform", "translate("+(-0.6*self.base_side)+","+(-0.45*self.base_side)+")")
-					.style("font-size", (self.base_side/8))
-					.attr("x",function(d,i){
-						var index =Math.floor(i/2)%ch_per_line;
-						return (0.4*Math.floor(index/10)+0.2)*self.base_side;
-					})
-					.attr("y",function(d,i){
-						var j = +d3.select(this).attr("line_number");
-						return (j+0.4)*self.base_side -self.base_side*j/2;
-					});
-			
-			//resize the background
-			d3.selectAll(".bases_bg")
-				.transition()
-					.style("opacity","0");
+		//move the top coordinate
+		d3.selectAll(".label_tl")
+			.transition()
+				.attr("transform", "translate(0,"+(-0.1*self.base_side)+")")
+				.style("font-size", (self.base_side/8))
+				.attr("x",function(d,i){
+					var index =Math.floor(i/2)%ch_per_line;
+					return (0.4*Math.floor(index/10)-0.4)*self.base_side;
+				})
+				.attr("y",function(d,i){
+					var j = +d3.select(this).attr("line_number");
+					return (j-0.3)*self.base_side -self.base_side*j/2;
+				});
+
+		//move the bottom coordinate
+		d3.selectAll(".label_br")
+			.transition()
+				.attr("transform", "translate("+(-0.6*self.base_side)+","+(-0.45*self.base_side)+")")
+				.style("font-size", (self.base_side/8))
+				.attr("x",function(d,i){
+					var index =Math.floor(i/2)%ch_per_line;
+					return (0.4*Math.floor(index/10)+0.2)*self.base_side;
+				})
+				.attr("y",function(d,i){
+					var j = +d3.select(this).attr("line_number");
+					return (j+0.4)*self.base_side -self.base_side*j/2;
+				});
+
+		//resize the background
+		d3.selectAll(".bases_bg")
+			.transition()
+				.style("opacity","0");
 
 
-			self.currentView = "print";
-//		}
+		self.currentView = "print";
 	},
 	toWebView: function(){
 		var self = this;
