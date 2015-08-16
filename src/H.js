@@ -7,7 +7,9 @@ var H =  {
 	alignment:null,
 	settings:null,
 	border:2,
-	
+	reference_visible:true,
+	query_visible:true,
+
 	init: function(settings){
 		var self = this;
 		self.dispatcher = d3.dispatch("locationchange");
@@ -368,7 +370,39 @@ var H =  {
 			pairbases.attr("transform", "translate(" + pairbases.pos + ",0)scale(1)");
 			self.dispatcher.locationchange(pairbases.pos, Math.abs(100*pairbases.pos/limit));
 		}
+	},
+	toggleReference:function(){
+		var self = this;
+		if (self.currentView == "web") {
+			d3.selectAll(".reference")
+				.style("visibility",self.reference_visible?"hidden":"visible");
+			d3.selectAll("#track_0")
+				.style("visibility",self.reference_visible?"hidden":"visible");
+			self.reference_visible = !self.reference_visible;
+			var delta = (self.reference_visible)?0.7:-0.3;
+			d3.selectAll(".pairbase")
+				.transition()
+				.attr("transform", function (d,i){
+					return "translate("+((i+2) * self.base_side)+","+( delta*self.base_side)+")" ;
+				});
+			d3.selectAll("#track_0,#track_1")
+				.transition()
+				.attr("transform", function (d,i){
+					return "translate(0,"+((i+delta) * self.base_side)+")" ;
+				});
+		}
+	},
+	toggleQuery:function(){
+		var self = this;
+		if (self.currentView == "web") {
+			d3.selectAll(".query")
+				.style("visibility",self.query_visible?"hidden":"visible");
+			d3.selectAll("#track_1")
+				.style("visibility",self.query_visible?"hidden":"visible");
+			self.query_visible = !self.query_visible;
+		}
 	}
+
 };
 
 module.exports = H;
