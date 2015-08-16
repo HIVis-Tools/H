@@ -1,40 +1,47 @@
 <!DOCTYPE>
 <html>
-<head>
-	<meta charset="UTF-8"> 
-	<script src="biojs-vis-H.min.js"></script>
-	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-	<link type="text/css" rel="stylesheet" href="H.css" />
-	
-	
-	<script>
+    <head>
+        <meta charset="UTF-8">
+        <script src="biojs-vis-H.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="H.css" />
 
-	jQuery( document ).ready(function( $ ) {
-		function getParameterByName(name) {
-		    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-		    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-		        results = regex.exec(location.search);
-		    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-		}
-		var url ="./";
-		var job_id=getParameterByName("job_id");
-		var component=null;
-		$.getJSON( url+job_id , function( data ) {
-			component = biojs.vis.H.init({});
-			component.load(data);
-			component.draw();
-		});
-		$("#toggler").click(function(){
-			component.toggleView();
-		});
 
-	});
-		
-	</script>
-</head>
-<body bgcolor="#f0ffff">
+        <script>
 
-<div id='holder' style='width: 80%; margin-left: 10%;'></div>
-<button id="toggler">Toggle view</button>
-</body>
+            jQuery( document ).ready(function( $ ) {
+                function getParameterByName(name) {
+                    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                            results = regex.exec(location.search);
+                    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+                }
+                var url ="./";
+                var job_id=getParameterByName("job_id");
+                var component=null;
+                $.getJSON( url+job_id , function( data ) {
+                    component = biojs.vis.H.init({});
+                    component.load(data);
+                    component.draw();
+                    component.dispatcher.on("locationchange",function(pos,per){
+                        $("#slider").val(per);
+                    });
+                });
+                $("#toggler").click(function(){
+                    component.toggleView();
+                });
+                $("#slider").change(function(){
+                    component.move($(this).val());
+                });
+
+            });
+
+        </script>
+    </head>
+    <body bgcolor="#f0ffff">
+        <div id='holder' style='width: 80%; margin-left: 10%; height: 200px;'></div>
+        <input type="range" id="slider" min="0" max="100" step="1" value="0"
+               style=" width: 80%; display: block; margin-left: 10%;"/>
+        <button id="toggler">Toggle view</button>
+    </body>
 </html>
