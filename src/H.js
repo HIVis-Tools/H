@@ -159,6 +159,7 @@ var H =  {
 		var original_pos=[];
 		self.settings.alignment_start;
 		for (var j=0;j<d.length;j++){
+			var css_class = (j==0)?"reference":"query";
 			//group
 			var g = d3.selectAll("#pairbase_"+i)
 				.classed(
@@ -166,7 +167,7 @@ var H =  {
 				,true);
 			//bases background
 			g.append("rect")
-				.attr("class", "bases_bg")
+				.attr("class", "bases_bg "+css_class)
 				.attr("x", -0.5*base_side+self.border)
 				.attr("y", (j-0.5)*base_side+self.border)
 				.attr("width",base_side- 2*self.border)
@@ -175,7 +176,7 @@ var H =  {
 			//labels
 			g.append("text")
 				.text( d[j])
-				.attr("class", "bases_labels")
+				.attr("class", "bases_labels "+css_class)
 				.attr("x", (-0.125)*base_side)
 				.attr("y", (j+0.125)*base_side)
 				.attr("line_number", j)
@@ -184,7 +185,7 @@ var H =  {
 			//top ;left coordinate
 			g.append("text")
 				.text( self.coordinates[i][j])
-				.attr("class", "position_label label_tl")
+				.attr("class", "position_label label_tl "+css_class)
 				.attr("x", (-0.4)*base_side)
 				.attr("y", (j-0.3)*base_side)
 				.attr("line_number", j)
@@ -193,7 +194,7 @@ var H =  {
 			//bottom right
 			g.append("text")
 				.text( self.coordinates[i][j==0?1:0])
-				.attr("class", "position_label label_br")
+				.attr("class", "position_label label_br "+css_class)
 				.attr("x", (0.2)*base_side)
 				.attr("y", (j+0.4)*base_side)
 				.attr("line_number", j)
@@ -224,7 +225,7 @@ var H =  {
 			.transition()
 				.attr("transform", function (d,i){
 					return "translate("+(self.base_side/2 +(i%ch_per_line)*self.base_side/3)+","+
-											( 2 * self.base_side*Math.floor(i/ch_per_line)*0.7+self.base_side/2)+")" ;
+											( 2 * self.base_side*Math.floor(i/ch_per_line)*0.5+self.base_side/2)+")" ;
 				});
 
 		d3.selectAll("g.track").style("visibility","hidden");
@@ -239,7 +240,7 @@ var H =  {
 				})
 				.attr("y",function(d,i){
 					var j = +d3.select(this).attr("line_number");
-					return (j+0.125)*self.base_side - self.base_side*j/2;
+					return (j+0.125)*self.base_side - self.base_side*j*0.65;
 				});
 
 		//move the top coordinate
@@ -253,7 +254,7 @@ var H =  {
 				})
 				.attr("y",function(d,i){
 					var j = +d3.select(this).attr("line_number");
-					return (j-0.3)*self.base_side -self.base_side*j/2;
+					return (j-0.3)*self.base_side -self.base_side*j*0.65;
 				});
 
 		//move the bottom coordinate
@@ -261,19 +262,19 @@ var H =  {
 			.transition()
 				.attr("transform", "translate("+(-0.6*self.base_side)+","+(-0.45*self.base_side)+")")
 				.style("font-size", (self.base_side/8))
+				.style("visibility", "hidden")
 				.attr("x",function(d,i){
 					var index =Math.floor(i/2)%ch_per_line;
 					return (0.4*Math.floor(index/10)+0.2)*self.base_side;
 				})
 				.attr("y",function(d,i){
 					var j = +d3.select(this).attr("line_number");
-					return (j+0.4)*self.base_side -self.base_side*j/2;
+					return (j+0.4)*self.base_side -self.base_side*j*0.65;
 				});
 
-		//resize the background
-		d3.selectAll(".bases_bg")
-			.transition()
-				.style("opacity","0");
+		d3.selectAll(".bases_bg").transition().style("opacity","0"); //hide background
+		// add the right class
+		d3.selectAll(".group_pb").classed({'group_pb': true, 'print': true, 'web':false})
 
 
 		self.currentView = "print";
@@ -321,6 +322,7 @@ var H =  {
 				.transition()
 					.attr("transform", "translate(0,0)")
 					.style("font-size", (self.base_side/7))
+					.style("visibility", "visible")
 					.attr("x",function(d,i){
 						return (0.2)*self.base_side;
 					})
@@ -332,6 +334,8 @@ var H =  {
 			d3.selectAll(".bases_bg")
 				.transition()
 					.style("opacity","1");
+			d3.selectAll(".group_pb")
+				.classed({'group_pb': true, 'print': false, 'web':true});
 			self.currentView = "web";
 //		}
 	},
@@ -362,6 +366,7 @@ var H =  {
 			pairbases.pos = move;
 			pairbases.attr("drag_pos",pairbases.pos);
 			pairbases.attr("transform", "translate(" + pairbases.pos + ",0)scale(1)");
+			self.dispatcher.locationchange(pairbases.pos, Math.abs(100*pairbases.pos/limit));
 		}
 	}
 };

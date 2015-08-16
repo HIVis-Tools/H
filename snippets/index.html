@@ -33,7 +33,12 @@
                 $("#slider").change(function(){
                     component.move($(this).val());
                 });
-
+                $("#color").change(function(){
+                    if ($(this).is(':checked'))
+                        d3.selectAll(".group_pb").classed({'group_pb': true, 'print': true});
+                    else
+                        d3.selectAll(".group_pb").classed({'group_pb': true, 'print': false});
+                });
             });
 
         </script>
@@ -43,5 +48,8 @@
         <input type="range" id="slider" min="0" max="100" step="1" value="0"
                style=" width: 80%; display: block; margin-left: 10%;"/>
         <button id="toggler">Toggle view</button>
+        <input type="checkbox" id="color"/><label for="color">Color labels</label>
+        <input type="checkbox" id="show_ref"/><label for="color">Show reference</label>
+        <input type="checkbox" id="show_query"/><label for="color">Show query</label>
     </body>
 </html>

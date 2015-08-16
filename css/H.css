@@ -1,37 +1,45 @@
 rect.background {
-	fill:white;
+    fill:white;
 }
 
 .track rect {
-	fill:#ddd;
+    fill:#ddd;
 }
 
 .sequence_name {
-	font-family: monospace;
-	font-size: 20px;
-	fill: rgb(50,50,50);
-	
+    font-family: monospace;
+    font-size: 20px;
+    fill: rgb(50,50,50);
+
 }
 .coordinate {
-	font-family: monospace;
-	font-size: 10px;
-	fill: rgb(150,150,150);
+    font-family: monospace;
+    font-size: 10px;
+    fill: rgb(150,150,150);
 }
 
 .pairbase {
-	font-family: monospace;
-	fill: rgb(50,50,50);
+    font-family: monospace;
+    fill: rgb(50,50,50);
 }
 .position_label {
-	fill: rgb(100,100,100);
+    fill: rgb(100,100,100);
 }
 .gap rect{
-	fill:#f7f7f7;
+    fill:#f7f7f7;
 }
 
 .match rect{
-	fill:#aec7e8;
+    fill:#aec7e8;
 }
 .mismatch rect{
-	fill:#ffbb78;
+    fill:#ffbb78;
+}
+
+g.print g.pairbase text.reference {
+    fill: red;
+}
+
+g.print g.pairbase text.query {
+    fill: blue;
 }
